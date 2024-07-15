@@ -22,7 +22,21 @@ pip install "uvicorn[standard]"
 
 ## Local Started
 ``` shell
+fastapi dev main.py
+```
+
+``` shell
 uvicorn main:app --reload
+```
+
+## Test
+- swagger : http://localhost:8000/docs
+- api docs : http://localhost:8000/redoc
+
+## 기타
+- `requirements.txt` freeze
+``` shell
+pip freeze > requirements.txt
 ```
 
 ## Reference

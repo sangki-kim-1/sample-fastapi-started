@@ -1,23 +1,26 @@
-from typing import Union
+from functools import lru_cache
+from typing_extensions import Annotated
+from fastapi import Depends, FastAPI
 
-from fastapi import FastAPI
-from pydantic import BaseModel
+from routers import users_router, item_router
+import config
 
 app = FastAPI()
 
-class Item(BaseModel):
-    name: str
-    price: float
-    is_offer: Union[bool, None] = None
+app.include_router(users_router.router)
+app.include_router(item_router.router)
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
+@lru_cache
+def load_settings():
+  return config.Settings()
 
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Union[str, None] = None):
-    return {"item_id": item_id, "q": q}
+@app.get("/", tags=["index"])
+def root():
+  return {"message": "Sample FastAPI application"}
 
-@app.put("/items/{item_id}")
-def update_item(item_id: int, item: Item):
-    return {"item_name": item.name, "item_id": item_id}
+@app.get("/about", tags=["about"])
+def about(settings: Annotated[config.Settings, Depends(load_settings)]):
+  return {
+    "app_name": settings.app_name,
+    "admin_email": settings.admin_email,
+  }
