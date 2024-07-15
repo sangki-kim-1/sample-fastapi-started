@@ -29,6 +29,12 @@ fastapi dev main.py
 uvicorn main:app --reload
 ```
 
+## Dot env
+```
+export ENVIRONMENT=production
+uvicorn main:app --reload
+```
+
 ## Test
 - swagger : http://localhost:8000/docs
 - api docs : http://localhost:8000/redoc

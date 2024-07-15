@@ -1,7 +1,9 @@
+import os
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
-    app_name: str = "Sampe App"
+    environment: str = "development"
+    app_name: str = "Sample App"
     admin_email: str
 
-    model_config = SettingsConfigDict(env_file=".env")
+    model_config = SettingsConfigDict(env_file=f'{os.getenv("ENVIRONMENT")}.env')
